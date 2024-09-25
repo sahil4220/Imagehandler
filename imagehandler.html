@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Box</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .click-image {
+            border-radius: 10px;
+            height: 250px;
+            width: 250px;
+            object-fit: cover;
+            cursor: pointer;
+           
+        }
+
+        #image-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+
+        }
+
+        #imagehandler {
+            height: 400px;
+            width: 700px;
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+
+        }
+
+        #imagehandler img {
+            height: 100%;
+            width: 100%;
+            
+        }
+
+        #btn-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 900px;
+
+        }
+
+        .btn {
+            height: 50px;
+            width: 70px;
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            
+
+        }
+        
+        .selected-image {
+            display: none;
+        }
+
+        #times {
+            font-weight: bolder;
+            font-size: 40px;
+            cursor: pointer;
+            color: red;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div id="image-container">
+        <img class="click-image" id="abc" src="./image2.jpg" alt="image2" />
+        <img class="click-image" src="./image3.jpg" alt="image3" />
+        <img class="click-image" src="./image4.jpg" alt="image4" />
+        <img class="click-image" src="./image1.jpg" alt="image1" />
+    </div>
+
+    <div class="selected-image">
+
+        <div id="btn-div">
+
+            <button class="btn prev-btn">Prev</button>
+
+            <div id="imagehandler">
+            </div>
+
+            <button class="btn next-btn">Next</button>
+            <span id="times">&times;</span>
+        </div>
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            $(".click-image").click(function () {
+                $(".selected-image").show()
+                var selectimage = $(this).attr("src");
+
+                $("#imagehandler").html(`<img src="${selectimage}" alt="selected image" />`);
+
+                if ($(this).is(':first-child')) {
+                    $(".prev-btn").hide();
+                } else {
+                    $(".prev-btn").show();
+                }
+
+                if ($(this).is(':last-child')) {
+                    $(".next-btn").hide();
+                } else {
+                    $(".next-btn").show();
+                }
+
+                $("#image-container").css({
+                    'opacity': 0.2
+                });
+                $("body").css({
+                    'background-color':"rgba(0, 0, 0, 0.5)"
+                })
+
+
+            });
+            $("#times").click(function () {
+                $(".selected-image").hide()
+                $("#image-container").css({
+                    'opacity': 1
+                })
+                $("body").css({
+                    'background-color':"white"
+                })
+
+            })
+            $(".next-btn").on("click", function () {
+
+                var selectedImageSrc = $("#imagehandler img").attr("src");
+                var currentImage = $("img[src='" + selectedImageSrc + "']");
+                var nextImage = currentImage.next()
+
+                $("#imagehandler").html(`<img src="${nextImage.attr('src')}" alt="next image" />`);
+
+                if (nextImage.is(':last-child')) {
+                    $(".next-btn").hide();
+
+                } else {
+                    $(".prev-btn").show();
+
+                }
+
+
+            });
+
+            $(".prev-btn").on("click", function () {
+
+                var selectedImageSrc = $("#imagehandler img").attr("src");
+                var currentImage = $("img[src='" + selectedImageSrc + "']");
+                var prevImage = currentImage.prev()
+
+                $("#imagehandler").html(`<img src="${prevImage.attr('src')}" alt="next image" />`);
+
+                if (prevImage.is(':first-child')) {
+                    $(".prev-btn").hide();
+
+                } else {
+                    $(".next-btn").show();
+                }
+
+
+            });
+
+        })
+
+    </script>
+</body>
+
+</html>
